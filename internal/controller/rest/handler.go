@@ -63,4 +63,16 @@ func (h *Handlers) CreateTodo(w http.ResponseWriter, r *http.Request) {
 	slog.Info("todo created", "id", id)
 }
 
-// TODO: implement other handlers
+func (h *Handlers) GetAllTodosHandler(w http.ResponseWriter, r *http.Request) {
+	todos, err := h.UseCase.GetAllTodos(r.Context())
+	if err != nil {
+		slog.Error("failed to get all todos", "error", err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(todos); err != nil {
+		slog.Error("failed to encode response", "error", err)
+	}
+}
