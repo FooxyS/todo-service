@@ -29,7 +29,7 @@ func NewHandlers(usecase UseCase) *Handlers {
 	}
 }
 
-func (h *Handlers) CreateTodo(w http.ResponseWriter, r *http.Request) {
+func (h *Handlers) CreateTodoHandler(w http.ResponseWriter, r *http.Request) {
 	var todo domain.Todo
 
 	if err := json.NewDecoder(r.Body).Decode(&todo); err != nil {
