@@ -127,7 +127,7 @@ func (h *Handlers) UpdateTodoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.UseCase.UpdateTodoByID(r.Context(), id, todo); errors.Is(err, domain.ErrTodoNotExist) {
-		slog.Warn("failed to get todo by id", "error", err, "id", id)
+		slog.Warn("failed to update todo", "error", err, "id", id)
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	} else if errors.Is(err, domain.ErrNoTitle) {
@@ -135,7 +135,7 @@ func (h *Handlers) UpdateTodoHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad request", http.StatusBadRequest)
 		return
 	} else if err != nil {
-		slog.Error("failed to get todo by id", "error", err)
+		slog.Error("failed to update todo", "error", err)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
@@ -159,11 +159,11 @@ func (h *Handlers) DeleteTodoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.UseCase.DeleteTodoByID(r.Context(), id); errors.Is(err, domain.ErrTodoNotExist) {
-		slog.Warn("failed to get todo by id", "error", err, "id", id)
+		slog.Warn("failed to delete todo", "error", err, "id", id)
 		http.Error(w, "todo not found", http.StatusNotFound)
 		return
 	} else if err != nil {
-		slog.Error("failed to get todo by id", "error", err)
+		slog.Error("failed to delete todo", "error", err)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
